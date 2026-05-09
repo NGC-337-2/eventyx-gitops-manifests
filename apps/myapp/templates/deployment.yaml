@@ -4,17 +4,17 @@ metadata:
   name: {{ .Values.app.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.app.name }}
-    version: {{ .Chart.AppVersion }}
+    app: {{ .Values.app.name | quote }}       # 👈 Best Practice: Always quote labels
+    version: {{ .Chart.AppVersion | quote }}   # 👈 FIX: This forces "1.0" instead of 1.0
 spec:
   replicas: {{ .Values.app.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.app.name }}
+      app: {{ .Values.app.name | quote }}      # 👈 Match labels should also be quoted
   template:
     metadata:
       labels:
-        app: {{ .Values.app.name }}
+        app: {{ .Values.app.name | quote }}    # 👈 Pod labels should also be quoted
     spec:
       containers:
       - name: {{ .Values.app.name }}
